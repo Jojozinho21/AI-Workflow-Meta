@@ -16,17 +16,15 @@
 
 ## O que e isso?
 
-Um sistema de **5 skills** para o [Claude Code](https://docs.anthropic.com/en/docs/claude-code) que transforma o terminal em uma fabrica de nucleos de AI.
+Um sistema de **8 skills** para o [Claude Code](https://docs.anthropic.com/en/docs/claude-code) que transforma o terminal em uma fabrica de nucleos de AI.
 
-Voce descreve o dominio. Cinco brains especializados fazem o resto.
+Tres comandos. Oito brains especializados. Pipeline automatico.
 
-| Resultado | O que vem pronto |
-|:----------|:-----------------|
-| `CLAUDE.md` | Dispatcher com regras imutaveis, routing, pipelines |
-| `Brain Skills` | Anatomia de 7 secoes, pre/post-condicoes, checklists |
-| `Memoria` | MEMORY_KNOWLEDGE + MEMORY_SESSIONS estruturados |
-| `Contexto` | Stack, convencoes, integracoes do projeto |
-| `Pipelines` | Sequencia de brains com gates de qualidade |
+| Comando | O que faz |
+|:--------|:----------|
+| `/workflow-criar` | Cria um nucleo **do zero** com brains, routing, pipelines, memoria |
+| `/workflow-editar` | Edita nucleos **existentes** — adiciona brains, ajusta routing, modifica skills |
+| `/workflow-analisar` | Analisa nucleo — 13 checks de qualidade, arquitetura, routing, memoria |
 
 <br>
 
@@ -46,31 +44,76 @@ cd AI-Workflow-Meta
 
 ## Como usar
 
-### Descreva o dominio — o pipeline faz o resto
+### ⚒️ `/workflow-criar` — Criar do zero
 
 ```
-> Cria um nucleo para gerenciar bots de Telegram
-  com comandos, intents, deploy e monitoramento.
+> /workflow-criar
+
+Cria um nucleo para gerenciar bots de Telegram
+com comandos, intents, deploy e monitoramento.
 ```
 
-O sistema **identifica a tarefa** e ativa o pipeline automaticamente:
+O que acontece:
 
 ```
-Pipeline: architect → generator → validator → DONE
+📐 FASE 1 — Projetar     → Analisa dominio, gera Nucleo Spec com brains e routing
+⏸️  GATE                  → Spec aprovada pelo usuario
+🔨 FASE 2 — Gerar        → Transforma spec em arquivos via 6 templates parametrizados
+✅ FASE 3 — Validar      → Audita contra 13 criterios de qualidade
+🔄 FASE 4 — Fix Loop     → Se falhar, corrige e revalida (max 2 iteracoes)
+```
 
-📐 Architect    → Analisa dominio, gera Nucleo Spec com brains e routing
-🔨 Generator    → Transforma spec em arquivos via 6 templates parametrizados
-✅ Validator    → Audita contra 13 criterios de qualidade
-🔄 Fix Loop     → Se falhar, corrige e revalida (max 2 iteracoes)
+---
+
+### ✏️ `/workflow-editar` — Editar existente
+
+```
+> /workflow-editar
+
+Adiciona brain de integracao ao nucleo de Telegram.
+O nucleo esta em ~/Desktop/Nucleo Telegram/
+```
+
+O que acontece:
+
+```
+🔍 FASE 1 — Mapear       → Le o nucleo, entende arquitetura e brains
+🛡️ FASE 2 — Proteger      → Identifica blast radius, preserva o que funciona
+✏️ FASE 3 — Editar        → Mudanca minima, segue convencoes do nucleo original
+✅ FASE 4 — Validar       → Audita 13 criterios no nucleo editado
+```
+
+---
+
+### 🔬 `/workflow-analisar` — Analisar / Auditar
+
+```
+> /workflow-analisar
+
+Analisa o nucleo em ~/Desktop/Nucleo Discord/
+O brain-dev nunca ativa.
+```
+
+O que acontece:
+
+```
+📊 INVENTARIO              → Lista brains, routing, pipelines, memoria
+🔍 VALIDACAO 13 CHECKS     → Audita contra 13 criterios de qualidade
+🏗️ ARQUITETURA             → Coerencia de routing, pipelines, gates
+🧠 MEMORIA                 → Schema, consistencia, uso correto
+📋 RELATORIO               → Findings com severidade (CRITICAL/WARNING/INFO)
 ```
 
 <br>
 
-## Os 5 Brains
+## Os 8 Brains
 
 | Brain | Ativa quando | O que faz |
 |:------|:-------------|:----------|
-| `workflow-architect` | Nucleo novo, descrever dominio | Analisa dominio e gera Nucleo Spec aprovada |
+| `workflow-criar` | **Criar nucleo** | **Roteador: ativa pipeline architect → generator → validator** |
+| `workflow-editar` | **Editar nucleo** | **Mapeia, protege e edita nucleo existente** |
+| `workflow-analisar` | **Analisar nucleo** | **Audita e entrega relatorio com findings** |
+| `workflow-architect` | Projetar spec | Analisa dominio e gera Nucleo Spec aprovada |
 | `workflow-generator` | Spec aprovada | Gera todos os arquivos via templates parametrizados |
 | `workflow-validator` | Nucleo gerado | Audita 13 criterios de qualidade, aprova ou devolve |
 | `workflow-retrospective` | Analisar nucleos passados | Propoe melhorias em templates com base em evidencia |
@@ -165,7 +208,10 @@ O sistema **lembra** decisoes e contexto entre sessoes:
 ```
 .
 ├── CLAUDE.md                          # Dispatcher (sempre carregado)
-├── .claude/skills/                    # 5 brains
+├── .claude/skills/                    # 8 brains
+│   ├── workflow-criar/SKILL.md        #   /workflow-criar (roteador)
+│   ├── workflow-editar/SKILL.md       #   /workflow-editar (editor)
+│   ├── workflow-analisar/SKILL.md     #   /workflow-analisar (auditor)
 │   ├── workflow-architect/SKILL.md    #   Projeta nucleos
 │   ├── workflow-generator/SKILL.md    #   Gera arquivos
 │   ├── workflow-validator/SKILL.md    #   Valida qualidade (13 checks)
@@ -195,7 +241,7 @@ Parte da familia **AI-Workflow** por [Jonathan Locks](https://github.com/Jojozin
 
 | Workflow | Dominio | Skills |
 |:---------|:--------|:-------|
-| [**AI-Workflow-Meta**](https://github.com/Jojozinho21/AI-Workflow-Meta) | Meta-workflow (este repo) | 5 brains |
+| [**AI-Workflow-Meta**](https://github.com/Jojozinho21/AI-Workflow-Meta) | Meta-workflow (este repo) | 8 brains |
 | [**AI-Workflow-Discord**](https://github.com/Jojozinho21/AI-Workflow-Discord) | Bots Discord (TypeScript) | 8 brains |
 | [**AI-Workflow-SobbleMC**](https://github.com/Jojozinho21/AI-Workflow-SobbleMC) | Plugins Minecraft (Java) | 3 skills |
 

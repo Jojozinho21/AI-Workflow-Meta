@@ -14,11 +14,21 @@
 6. Toda regra gerada DEVE incluir justificativa (WHY) — regras sem razao sao ignoradas pelo modelo
 7. Templates so mudam via retrospectiva ou workflow-prompt aprovados — mudancas nao rastreadas degradam qualidade
 
+## Comandos
+
+| Comando | O que faz |
+|---|---|
+| `/workflow-criar` | Cria nucleo do zero (pipeline: architect → generator → validator) |
+| `/workflow-editar` | Edita nucleo existente (mapear → proteger → editar → validar) |
+| `/workflow-analisar` | Analisa e audita nucleo existente (13 checks + arquitetura) |
+
 ## Routing de Skills
 
 | Tipo de tarefa | Skill |
 |---|---|
-| Criar nucleo novo, descrever dominio, planejar nucleo | workflow-architect |
+| Criar nucleo novo, descrever dominio, planejar nucleo | workflow-criar → workflow-architect |
+| Editar nucleo existente, adicionar brain, ajustar routing | workflow-editar |
+| Analisar, auditar, revisar nucleo existente | workflow-analisar → workflow-validator |
 | Gerar arquivos a partir de spec aprovada | workflow-generator |
 | Validar nucleo gerado, checar qualidade | workflow-validator |
 | Analisar nucleos anteriores, melhorar templates | workflow-retrospective |
