@@ -288,7 +288,6 @@ MIT — use, modifique e distribua livremente.
 
 Feito por **</zJoo>** · [SobbleMC](https://github.com/Jojozinho21)
 
-*Powered by [Claude Code](https://claude.ai/claude-code)*
 
 </div>
 
