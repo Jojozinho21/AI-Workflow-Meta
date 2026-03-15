@@ -14,7 +14,29 @@
     {{OUTPUT_TEMPLATES}}  — Max 2 templates de output com exemplos concretos
     {{SELF_REVIEW}}       — Itens de checklist de self-review (- [ ] formato)
     {{POSTCONDITIONS}}    — Lista de post-condicoes (gate de saida)
+    {{DOMAIN_PREFIX}}     — Prefixo do dominio do nucleo (ex: "brain", "plugin", "github")
+    {{RATIONALIZATION_1}} — Pensamento enganoso #1 que parece razoavel mas leva a erro
+    {{WHY_1}}             — Explicacao de por que rationalization #1 esta errada
+    {{RATIONALIZATION_2}} — Pensamento enganoso #2
+    {{WHY_2}}             — Explicacao de por que rationalization #2 esta errada
+    {{RATIONALIZATION_3}} — Pensamento enganoso #3
+    {{WHY_3}}             — Explicacao de por que rationalization #3 esta errada
+    {{ESCALATION_1}}      — Condicao de escalacao #1 (quando parar e pedir ajuda)
+    {{ESCALATION_2}}      — Condicao de escalacao #2
+    {{ESCALATION_3}}      — Condicao de escalacao #3
     {{HANDOFF_CRITERIA}}  — Criterios de handoff para outros brains
+-->
+
+<!--
+  Convencao de Prefixo:
+    O prefixo do skill segue o dominio do nucleo:
+    - Nucleo de Discord → brain-*   (brain-architect, brain-dev, brain-testing)
+    - Nucleo de Plugins → plugin-*  (plugin, plugin-editar, plugin-analisar)
+    - Nucleo de GitHub  → github-*  (github-commit, github-readme, github-setup)
+    - Nucleo Meta       → workflow-* (workflow-criar, workflow-editar)
+
+    Regra: {{DOMAIN_PREFIX}}-{{BRAIN_NAME}}
+    O prefixo e definido pelo workflow-architect na spec do nucleo.
 -->
 
 ---
@@ -77,6 +99,43 @@ description: "{{BRAIN_DESCRIPTION}}"
      - Se precisar de sub-items, usar indent com - -->
 
 <!-- ============================================================
+     SECAO 3.5a: RACIONALIZACOES A REJEITAR
+     Lista de pensamentos que parecem razoaveis mas levam a erros.
+     ============================================================ -->
+
+## Racionalizacoes a Rejeitar
+
+<!--
+  Lista de pensamentos que PARECEM razoaveis mas levam a erros.
+  Formato: tabela com 2 colunas.
+  Gerar 3-5 racionalizacoes especificas ao dominio do brain.
+  WHY: Previne o modelo de tomar atalhos que parecem produtivos mas degradam qualidade.
+-->
+
+| Pensamento | Por que esta errado |
+|-----------|-------------------|
+| {{RATIONALIZATION_1}} | {{WHY_1}} |
+| {{RATIONALIZATION_2}} | {{WHY_2}} |
+| {{RATIONALIZATION_3}} | {{WHY_3}} |
+
+<!-- ============================================================
+     SECAO 3.5b: LIMIARES DE ESCALACAO
+     Define quando o brain deve PARAR e pedir ajuda ao usuario.
+     ============================================================ -->
+
+## Limiares de Escalacao
+
+<!--
+  Define quando o brain deve PARAR e pedir ajuda ao usuario.
+  Formato: lista com condicoes concretas e numericas.
+  WHY: Previne loops infinitos e decisoes autonomas em situacoes ambiguas.
+-->
+
+- {{ESCALATION_1}}
+- {{ESCALATION_2}}
+- {{ESCALATION_3}}
+
+<!-- ============================================================
      SECAO 4/7: TEMPLATES DE OUTPUT
      Max 2 templates concretos mostrando o formato de saida esperado.
      Usar blocos de codigo com a linguagem correta.
@@ -120,6 +179,16 @@ Antes de apresentar ao usuario, verificar:
      - Cada item deve ser binario (sim/nao)
      - Ordenar do mais critico ao menos critico
      - Incluir items especificos do dominio -->
+
+<!--
+  IMPORTANTE: Cada item de self-review DEVE exigir evidencia verificavel.
+  NAO usar apenas "PASS/FAIL" — incluir instrucao de como verificar.
+  Exemplo:
+    - [ ] Codigo compila sem erros? (rodar comando e colar output)
+    - [ ] Todos os arquivos do plano foram criados? (listar com ls)
+    - [ ] Testes passam? (rodar comando e mostrar resultado)
+  WHY: Self-review sem evidencia e teatro — nao previne erros reais.
+-->
 
 <!-- ============================================================
      SECAO 6/7: POST-CONDICOES (gate de saida)

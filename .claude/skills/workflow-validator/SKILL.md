@@ -7,7 +7,7 @@ description: "Valida qualidade e consistencia de nucleos gerados. Ativar para: v
 
 ## Papel
 
-Valida qualidade e consistencia de nucleos gerados aplicando 13 itens de verificacao sistematica.
+Valida qualidade e consistencia de nucleos gerados aplicando 17 itens de verificacao sistematica.
 Funciona como o "critico" no protocolo Generator-Critic: recebe nucleo gerado, audita contra padroes, e aprova ou devolve com issues.
 
 ## Pre-condicoes (gate de entrada)
@@ -16,7 +16,7 @@ Funciona como o "critico" no protocolo Generator-Critic: recebe nucleo gerado, a
 - Caminho do nucleo disponivel no `nucleos/registry.md` ou informado pelo usuario
 - Se caminho nao encontrado: perguntar ao usuario antes de prosseguir
 
-## Regras — 13 Itens de Verificacao
+## Regras — 17 Itens de Verificacao
 
 1. **CLAUDE.md < 100 linhas** — contar com `wc -l`. Se exceder: identificar secoes que podem ser compactadas ou movidas para skills — porque cada linha extra consome contexto em toda conversa
 2. **Cada skill < 400 linhas** — contar cada SKILL.md. Se exceder: sugerir mover conteudo para `references/` — porque skills longas diluem a atencao do modelo
@@ -31,6 +31,10 @@ Funciona como o "critico" no protocolo Generator-Critic: recebe nucleo gerado, a
 11. **Memoria com schema rigido** — verificar MEMORY_KNOWLEDGE.md usa tabelas markdown e bullets, nao paragrafos — porque paragrafos nao sao parseveis para retrospectiva
 12. **Nenhum placeholder/TODO** — buscar `{{`, `TODO`, `FIXME`, `placeholder` em todos arquivos (exceto `templates/`) — porque placeholders significam geracao incompleta
 13. **Regras com WHY** — verificar que regras numeradas tem justificativa apos `—` — porque regras sem razao sao ignoradas pelo modelo
+14. **Cada brain tem secao "Racionalizacoes a Rejeitar"** — verificar secao existe em cada SKILL.md — WHY: previne atalhos perigosos
+15. **Cada brain tem secao "Limiares de Escalacao"** — verificar secao existe em cada SKILL.md — WHY: previne loops infinitos
+16. **Self-review exige evidencia verificavel** — verificar que itens de self-review incluem instrucao de como verificar — WHY: self-review sem evidencia e teatro
+17. **Nucleo tem install.sh funcional** — verificar que install.sh existe na raiz e e executavel — WHY: skills sem installer nao sao descobertas
 
 ### Procedimento de verificacao
 
@@ -39,7 +43,7 @@ Para cada item:
 2. Registrar PASS ou FAIL
 3. Se FAIL: documentar o problema especifico e sugerir fix concreto
 
-Ordem de execucao: seguir numeracao 1-13 sequencialmente.
+Ordem de execucao: seguir numeracao 1-17 sequencialmente.
 Nao pular itens — mesmo que falhas anteriores sejam graves.
 
 ## Templates de output
@@ -50,7 +54,7 @@ Nao pular itens — mesmo que falhas anteriores sejam graves.
 ## Validation Report — {{NUCLEO_NAME}}
 
 **Data**: YYYY-MM-DD
-**Status**: PASSED / FAILED (N/13)
+**Status**: PASSED / FAILED (N/17)
 
 ### Resultados
 | # | Item | Status | Detalhe |
@@ -68,6 +72,10 @@ Nao pular itens — mesmo que falhas anteriores sejam graves.
 | 11 | Memoria schema rigido | PASS/FAIL | paragrafos encontrados |
 | 12 | Nenhum placeholder | PASS/FAIL | arquivo:linha |
 | 13 | Regras com WHY | PASS/FAIL | regra N sem WHY |
+| 14 | Racionalizacoes a Rejeitar | PASS/FAIL | skill-x: ausente |
+| 15 | Limiares de Escalacao | PASS/FAIL | skill-x: ausente |
+| 16 | Self-review com evidencia | PASS/FAIL | skill-x: sem instrucao |
+| 17 | install.sh funcional | PASS/FAIL | ausente/nao executavel |
 
 ### Issues (se houver)
 - **Item N**: [descricao do problema] → [sugestao de fix]
@@ -77,7 +85,7 @@ Nao pular itens — mesmo que falhas anteriores sejam graves.
 
 Antes de entregar o report, verificar:
 
-- [ ] Todos 13 itens verificados sistematicamente?
+- [ ] Todos os 17 itens verificados sistematicamente?
 - [ ] Cada FAIL tem detalhe especifico (nao generico)?
 - [ ] Cada falha tem sugestao de fix concreta e acionavel?
 - [ ] Report completo entregue (tabela + issues)?
@@ -85,14 +93,14 @@ Antes de entregar o report, verificar:
 
 ## Post-condicoes (gate de saida)
 
-- 13/13 passando → nucleo aprovado, pronto para ativacao
+- 17/17 passando → nucleo aprovado, pronto para ativacao
 - Issues encontrados → lista de falhas com sugestoes de fix entregue
 - Report completo gerado no formato padrao (tabela + issues)
 - Resultado registrado: PASSED ou FAILED com contagem
 
 ## Criterios de handoff
 
-- **13/13 PASS** → nucleo aprovado. Atualizar `nucleos/registry.md` com Status: Active. DONE.
+- **17/17 PASS** → nucleo aprovado. Atualizar `nucleos/registry.md` com Status: Active. DONE.
 - **Issues encontrados** → devolver lista para workflow-generator (max 2 iteracoes internas entre generator e validator)
 - **Apos 2 iteracoes ainda com falhas** → escalar ao usuario com issues especificos e sugestoes
 - **Falha apos escalation** → nucleo fica com Status: Failed no registry, usuario decide proximo passo
