@@ -1,3 +1,5 @@
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:6C5CE7,50:0984e3,100:00CEC9&height=120&section=header&text=&fontSize=0" />
+
 <div align="center">
 
 # ⚡ AI Workflow Meta
@@ -26,7 +28,7 @@ Tres comandos. Oito brains especializados. Pipeline automatico.
 |:--------|:----------|
 | `/workflow-criar` | Cria um nucleo **do zero** com brains, routing, pipelines, memoria |
 | `/workflow-editar` | Edita nucleos **existentes** — adiciona brains, ajusta routing, modifica skills |
-| `/workflow-analisar` | Analisa nucleo — 13 checks de qualidade, arquitetura, routing, memoria |
+| `/workflow-analisar` | Analisa nucleo — 17 checks de qualidade, arquitetura, routing, memoria |
 
 <br>
 
@@ -36,11 +38,21 @@ Tres comandos. Oito brains especializados. Pipeline automatico.
 # 1. Clone
 git clone https://github.com/Jojozinho21/AI-Workflow-Meta.git
 
-# 2. Abra com Claude Code no diretorio
-cd AI-Workflow-Meta
+# 2. Instale
+cd AI-Workflow-Meta && ./install.sh
 
-# 3. Descreva o dominio do nucleo que quer criar. Pronto.
+# 3. Reinicie o Claude Code. Pronto.
 ```
+
+<details>
+<summary><b>Instalacao manual</b></summary>
+
+```bash
+git clone https://github.com/Jojozinho21/AI-Workflow-Meta.git
+cp -r AI-Workflow-Meta/.claude/skills/* ~/.claude/skills/
+```
+
+</details>
 
 <br>
 
@@ -61,7 +73,7 @@ O que acontece:
 📐 FASE 1 — Projetar     → Analisa dominio, gera Nucleo Spec com brains e routing
 ⏸️  GATE                  → Spec aprovada pelo usuario
 🔨 FASE 2 — Gerar        → Transforma spec em arquivos via 6 templates parametrizados
-✅ FASE 3 — Validar      → Audita contra 13 criterios de qualidade
+✅ FASE 3 — Validar      → Audita contra 17 criterios de qualidade
 🔄 FASE 4 — Fix Loop     → Se falhar, corrige e revalida (max 2 iteracoes)
 ```
 
@@ -82,7 +94,7 @@ O que acontece:
 🔍 FASE 1 — Mapear       → Le o nucleo, entende arquitetura e brains
 🛡️ FASE 2 — Proteger      → Identifica blast radius, preserva o que funciona
 ✏️ FASE 3 — Editar        → Mudanca minima, segue convencoes do nucleo original
-✅ FASE 4 — Validar       → Audita 13 criterios no nucleo editado
+✅ FASE 4 — Validar       → Audita 17 criterios no nucleo editado
 ```
 
 ---
@@ -100,7 +112,7 @@ O que acontece:
 
 ```
 📊 INVENTARIO              → Lista brains, routing, pipelines, memoria
-🔍 VALIDACAO 13 CHECKS     → Audita contra 13 criterios de qualidade
+🔍 VALIDACAO 17 CHECKS     → Audita contra 17 criterios de qualidade
 🏗️ ARQUITETURA             → Coerencia de routing, pipelines, gates
 🧠 MEMORIA                 → Schema, consistencia, uso correto
 📋 RELATORIO               → Findings com severidade (CRITICAL/WARNING/INFO)
@@ -117,7 +129,7 @@ O que acontece:
 | `workflow-analisar` | **Analisar nucleo** | **Audita e entrega relatorio com findings** |
 | `workflow-architect` | Projetar spec | Analisa dominio e gera Nucleo Spec aprovada |
 | `workflow-generator` | Spec aprovada | Gera todos os arquivos via templates parametrizados |
-| `workflow-validator` | Nucleo gerado | Audita 13 criterios de qualidade, aprova ou devolve |
+| `workflow-validator` | Nucleo gerado | Audita 17 criterios de qualidade, aprova ou devolve |
 | `workflow-retrospective` | Analisar nucleos passados | Propoe melhorias em templates com base em evidencia |
 | `workflow-prompt` | Mudar estrutura do sistema | Meta-otimiza o proprio Nucleo Workflow |
 
@@ -156,9 +168,9 @@ Templates com `{{PLACEHOLDER}}` que geram todos os arquivos de um nucleo:
 
 <br>
 
-## 13 Verificacoes de Qualidade
+## 17 Verificacoes de Qualidade
 
-O Validator aplica **13 checks** em todo nucleo gerado:
+O Validator aplica **17 checks** em todo nucleo gerado:
 
 ```
 ✅ CLAUDE.md < 100 linhas          ✅ Checklist de self-review
@@ -167,7 +179,9 @@ O Validator aplica **13 checks** em todo nucleo gerado:
 ✅ 3+ trigger phrases por skill    ✅ Memoria com schema rigido
 ✅ Zero duplicacao de regras       ✅ Nenhum placeholder/TODO
 ✅ Pre-condicoes em cada brain     ✅ Toda regra com justificativa (WHY)
-✅ Post-condicoes em cada brain
+✅ Post-condicoes em cada brain    ✅ Handoff explicito entre brains
+✅ Gates de entrada definidos      ✅ Pipelines com terminacao garantida
+✅ install.sh funcional
 ```
 
 <br>
@@ -210,13 +224,14 @@ O sistema **lembra** decisoes e contexto entre sessoes:
 ```
 .
 ├── CLAUDE.md                          # Dispatcher (sempre carregado)
+├── install.sh                         # Instalador one-click
 ├── .claude/skills/                    # 8 brains
 │   ├── workflow-criar/SKILL.md        #   /workflow-criar (roteador)
 │   ├── workflow-editar/SKILL.md       #   /workflow-editar (editor)
 │   ├── workflow-analisar/SKILL.md     #   /workflow-analisar (auditor)
 │   ├── workflow-architect/SKILL.md    #   Projeta nucleos
 │   ├── workflow-generator/SKILL.md    #   Gera arquivos
-│   ├── workflow-validator/SKILL.md    #   Valida qualidade (13 checks)
+│   ├── workflow-validator/SKILL.md    #   Valida qualidade (17 checks)
 │   ├── workflow-retrospective/SKILL.md #  Melhora templates
 │   └── workflow-prompt/SKILL.md       #   Meta-otimizacao
 ├── templates/                         # 6 templates parametrizados
@@ -239,13 +254,14 @@ O sistema **lembra** decisoes e contexto entre sessoes:
 
 ## Ecossistema
 
-Parte da familia **AI-Workflow** por [Jonathan Locks](https://github.com/Jojozinho21):
+Parte da familia **AI-Workflow** por [</zJoo>](https://github.com/Jojozinho21):
 
 | Workflow | Dominio | Descricao | Skills |
 |:---------|:--------|:----------|:-------|
 | [**AI-Workflow-Meta**](https://github.com/Jojozinho21/AI-Workflow-Meta) | Meta-workflow (este repo) | Cria, edita e analisa nucleos de AI completos | 8 brains |
 | [**AI-Workflow-Discord**](https://github.com/Jojozinho21/AI-Workflow-Discord) | Bots Discord (TypeScript) | Pipeline completo: architect → dev → testing → ops | 8 brains |
 | [**AI-Workflow-SobbleMC**](https://github.com/Jojozinho21/AI-Workflow-SobbleMC) | Plugins Minecraft (Java) | Cria, edita e analisa plugins Spigot/Paper | 3 skills |
+| [**AI-Workflow-Github**](https://github.com/Jojozinho21/AI-Workflow-Github) | GitHub | Commits, READMEs, perfis, releases, setup | 6 brains |
 
 <br>
 
@@ -266,12 +282,14 @@ Parte da familia **AI-Workflow** por [Jonathan Locks](https://github.com/Jojozin
 
 MIT — use, modifique e distribua livremente.
 
-<br>
-
 <div align="center">
 
-Feito por **Jonathan Locks** · [SobbleMC](https://sobblemc.com)
+<br>
 
-*Powered by Claude Code*
+Feito por **</zJoo>** · [SobbleMC](https://github.com/Jojozinho21)
+
+*Powered by [Claude Code](https://claude.ai/claude-code)*
 
 </div>
+
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:00CEC9,50:0984e3,100:6C5CE7&height=80&section=footer" />
