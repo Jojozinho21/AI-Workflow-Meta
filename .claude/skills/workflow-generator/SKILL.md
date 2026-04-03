@@ -1,26 +1,32 @@
 ---
 name: workflow-generator
-description: "Gera todos os arquivos de um nucleo a partir de spec aprovada e templates parametrizados. Ativar para: gerar nucleo, criar arquivos do nucleo, montar workspace, construir segundo cerebro a partir de spec."
+description: "Gera todos os arquivos de um nucleo ou workflow empresarial a partir de spec aprovada e templates parametrizados. Ativar para: gerar nucleo, criar arquivos do nucleo, montar workspace, construir segundo cerebro a partir de spec, gerar documentos de workflow empresarial, gerar SOP, gerar workflow operacional."
 ---
 
 # Workflow Generator — Nucleo Workflow
 
 ## Papel
 
-Pega Nucleo Spec aprovada e gera todos os arquivos de um nucleo completo usando templates parametrizados.
-Transforma planejamento em workspace funcional, pronto para uso imediato.
+Pega spec aprovada (Nucleo Spec ou Business Workflow Design) e gera os arquivos correspondentes.
+- **Nucleo Spec** → workspace de AI com CLAUDE.md, SKILL.md por brain, memoria
+- **Business Workflow Design** → documentos de workflow operacional (workflow.md, sop.md, checklists, metricas)
+
+Transforma planejamento em entregaveis prontos para uso imediato.
 
 ## Pre-condicoes (gate de entrada)
 
-- Nucleo Spec com `Status: Approved` (gerada pelo workflow-architect)
-- Templates disponiveis em `templates/` do Nucleo Workflow:
+- Spec ou Design com `Status: Approved` (gerado pelo workflow-architect)
+- **Detectar tipo antes de gerar**:
+  - Se tem campo "Brains" → Nucleo Spec → gerar workspace de AI
+  - Se tem campo "Etapas" + "Agentes" + "Trigger" → Business Workflow Design → gerar documentos de workflow
+- Se spec nao tem Status: Approved → recusar e redirecionar ao workflow-architect
+- **Para Nucleo Spec**: templates disponiveis em `templates/` do Nucleo Workflow:
   - `claude-md.tmpl.md` — estrutura do CLAUDE.md
   - `brain-skill.tmpl.md` — anatomia de 7 secoes para cada brain
   - `context.tmpl.md` — contexto do projeto
   - `memory-knowledge.tmpl.md` — schema de decisoes e entidades
   - `memory-sessions.tmpl.md` — formato de log de sessoes
   - `playbooks.tmpl.md` — pipelines de playbooks
-- Se spec nao tem Status: Approved → recusar e redirecionar ao workflow-architect
 - Se algum template estiver ausente → alertar usuario e listar templates faltantes
 
 ## Regras
@@ -156,9 +162,79 @@ Variar entre:
 Exemplo bom: `"Ativar para: implementar codigo, editar arquivo existente, refatorar, codar feature."`
 Exemplo ruim: `"Ativar para: implementar, implementar codigo, implementacao."` (mesma raiz repetida)
 
+---
+
+## Geracao de Workflow Empresarial (Business Workflow Design)
+
+Quando o input e um Business Workflow Design aprovado, gerar documentos operacionais — nao workspace de AI.
+
+### Estrutura de arquivos gerada
+
+```
+~/Desktop/Workflow {{NOME}}/
+├── workflow.md          ← documento principal (etapas completas)
+├── sop.md               ← procedimento operacional padrao (execucao diaria)
+├── metricas.md          ← painel de metricas e alertas de gargalo
+├── checklists/
+│   └── {{ETAPA}}.md     ← checklist por etapa repetitiva
+└── templates/
+    └── {{ARTEFATO}}.md  ← templates de documentos/mensagens por etapa
+```
+
+### Passo 1: Gerar workflow.md (documento principal)
+
+Preencher com o Business Workflow Design aprovado:
+- Visao geral do workflow (1 paragrafo)
+- Trigger de inicio
+- Tabela de etapas completa (responsavel, input, output, gate, tempo)
+- Diagrama textual do fluxo: `Trigger → Etapa1 → Gate → Etapa2 → ... → Output Final`
+- Guia de implementacao nas ferramentas (como configurar cada ferramenta para suportar o workflow)
+
+### Passo 2: Gerar sop.md (procedimento operacional padrao)
+
+Versao simplificada para uso diario — linguagem direta, imperativa:
+- "Quando [trigger]: faca [acao]"
+- Lista de verificacao de execucao em ordem
+- O que fazer em cada condicao de gate
+- Contatos/responsaveis por etapa
+- O que fazer se o processo travar
+
+### Passo 3: Gerar checklists/ por etapa repetitiva
+
+Para cada etapa que se repete frequentemente:
+- Nome da etapa como titulo
+- Lista de itens `- [ ]` em ordem de execucao
+- Criterio de "pronto" ao final
+- Tempo esperado
+
+### Passo 4: Gerar templates/ por artefato
+
+Para cada artefato recorrente (email, relatorio, briefing, ata):
+- Template preenchivel com campos marcados como `[CAMPO]`
+- Instrucao de preenchimento para cada campo
+- Exemplo preenchido (ficticio mas realista)
+
+### Passo 5: Gerar metricas.md
+
+Painel de acompanhamento:
+- Tabela de metricas com baseline e meta
+- Frequencia de medicao (diaria, semanal, mensal)
+- Como medir cada metrica (fonte de dados)
+- Alertas de gargalo com condicao e acao esperada
+
+### Passo 6: Registrar no nucleos/registry.md
+
+Adicionar entrada com tipo "Business Workflow":
+```markdown
+| {{DATA}} | {{NOME}} | {{CAMINHO}} | Business Workflow | Active |
+```
+
+---
+
 ## Escalation Points
 
 - Spec com mais de 10 brains → confirmar com usuario que complexidade e intencional
+- Business Workflow Design com mais de 3 sub-workflows → confirmar se gera tudo de uma vez ou em partes
 - Dominio requer templates customizados nao existentes → alertar e sugerir criacao via workflow-prompt
 - Caminho de destino ja contem arquivos → perguntar se deve sobrescrever ou gerar em caminho alternativo
 - Spec referencia integracoes sem detalhes → perguntar ao usuario antes de gerar brain de integracao
@@ -227,17 +303,28 @@ Notar: description tem 3 trigger phrases, regras tem WHY, pre-condicoes sao gate
 
 Antes de apresentar ao usuario, verificar:
 
+**Para Nucleo Spec (AI):**
 - [ ] Todos os brains da spec tem skills gerados?
 - [ ] CLAUDE.md < 100 linhas?
 - [ ] Cada skill < 400 linhas?
-- [ ] Nenhum `{{PLACEHOLDER}}` sem preencher?
 - [ ] Routing table no CLAUDE.md cobre todos os brains?
 - [ ] Playbooks referenciam apenas brains existentes?
 - [ ] `.ai/` files criados com schema correto?
-- [ ] Nucleo registrado em `registry.md`?
 - [ ] Todas descriptions tem 3+ trigger phrases?
 - [ ] Todas regras tem WHY apos `—`?
 - [ ] Git inicializado no destino com commit inicial?
+
+**Para Business Workflow Design:**
+- [ ] workflow.md gerado com todas as etapas?
+- [ ] sop.md gerado com linguagem direta e imperativa?
+- [ ] Checklist gerado para cada etapa repetitiva?
+- [ ] Templates gerados para cada artefato recorrente?
+- [ ] metricas.md com baseline, meta e fonte de dados?
+- [ ] Guia de implementacao nas ferramentas incluido?
+
+**Ambos:**
+- [ ] Nenhum `{{PLACEHOLDER}}` sem preencher?
+- [ ] Registrado em `registry.md`?
 
 ## Post-condicoes (gate de saida)
 

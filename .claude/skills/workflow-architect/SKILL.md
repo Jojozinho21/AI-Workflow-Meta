@@ -1,22 +1,29 @@
 ---
 name: workflow-architect
-description: "Analisa dominios e gera specs completas para novos nucleos de AI. Ativar para: criar nucleo novo, descrever dominio, planejar nucleo, projetar workflow, definir segundo cerebro, montar sistema de AI."
+description: "Analisa dominios e gera specs completas para novos nucleos de AI ou workflows empresariais. Ativar para: criar nucleo novo, descrever dominio, planejar nucleo, projetar workflow, definir segundo cerebro, montar sistema de AI, desenhar workflow para empresa, design de processo."
 ---
 
 # Workflow Architect — Nucleo Workflow
 
 ## Papel
 
-Analisa dominios de qualquer tipo e gera Nucleo Specs completas.
-Produz documentos estruturados que descrevem a arquitetura de um novo nucleo de AI.
+Analisa dominios de qualquer tipo e gera specs completas — tanto Nucleo Specs (sistemas de AI) quanto Business Workflow Specs (workflows operacionais para empresas).
+Produz documentos estruturados prontos para o workflow-generator transformar em entregaveis.
 
 ## Pre-condicoes (gate de entrada)
 
-- Descricao do dominio recebida do usuario (o que o nucleo vai fazer)
-- Se descricao vaga: fazer ate 3 perguntas de esclarecimento antes de planejar
+- Descricao do dominio recebida (o que o nucleo/workflow vai fazer)
+- **Se vier do workflow-business**: Business Workflow Spec com Status: Approved ja disponivel — usar como input, nao repetir perguntas
+- **Se vier direto do usuario (dominio dev/AI)**: fazer ate 3 perguntas de esclarecimento antes de planejar
 - Ler nucleos/registry.md para reusar patterns de nucleos anteriores
 
-### Perguntas de esclarecimento (quando necessario)
+### Detectar tipo de dominio
+
+Antes de planejar, classificar o dominio:
+- **Dominio Dev/AI**: codigo, plataformas tecnicas, bots, plugins, APIs → gerar Nucleo Spec
+- **Dominio Empresarial**: processos de negócio, times, produtividade, operacoes → gerar Business Workflow Design
+
+### Perguntas de esclarecimento — dominio Dev/AI (quando necessario)
 
 Usar ate 3 perguntas focadas para eliminar ambiguidade:
 - "Quais sao as 3-5 tarefas principais que o nucleo vai executar?"
@@ -183,31 +190,137 @@ Alguns brains aparecem em praticamente todo nucleo. Usar como base e adaptar:
 Brains especificos do dominio sao adicionados conforme necessidade
 (ex: brain-integration, brain-ops, brain-research).
 
+---
+
+## Design de Workflow Empresarial
+
+Quando o dominio e empresarial (vindo do workflow-business), o output e diferente.
+Nao gerar Nucleo Spec — gerar Business Workflow Design.
+
+### O que e um Business Workflow Design
+
+Documento que descreve o workflow operacional completo de uma empresa:
+- Etapas sequenciais com responsaveis humanos
+- Gates de aprovacao e condicoes de avanco
+- Templates e checklists por etapa
+- Metricas de acompanhamento
+- Guia de implementacao nas ferramentas existentes
+
+### Passo 1: Ler a Business Workflow Spec
+
+Extrair da spec (gerada pelo workflow-business):
+- Setor, tamanho, ferramentas em uso
+- Agentes humanos e seus papeis
+- Etapas ja mapeadas (as-is e to-be)
+- Dores e metricas de sucesso
+
+### Passo 2: Refinar e expandir etapas
+
+Para cada etapa da spec:
+- Detalhar o que exatamente acontece (nao apenas o nome)
+- Definir o artefato que entra e o artefato que sai
+- Especificar o gate: qual condicao permite avancar?
+- Estimar tempo esperado por etapa
+- Identificar onde a ferramenta existente e usada
+
+### Passo 3: Criar templates por etapa (quando aplicavel)
+
+Para etapas repetitivas (onboarding, atendimento, reuniao, relatorio):
+- Checklist de execucao (o que fazer, nessa ordem)
+- Template de documento/mensagem padrao
+- Criterios de qualidade ("como sei que esta bom?")
+
+### Passo 4: Definir metricas de acompanhamento
+
+- Metrica de velocidade: quanto tempo cada etapa demora?
+- Metrica de qualidade: qual o criterio de "bem feito"?
+- Metrica de volume: quantos itens passam pelo workflow por periodo?
+- Alerta de gargalo: qual condicao indica que o processo travou?
+
+### Template: Business Workflow Design
+
+```markdown
+# Workflow: {{NOME}}
+
+**Empresa**: {{SETOR}} — {{TAMANHO}}
+**Processo**: {{PROCESSO}}
+**Versao**: 1.0
+**Ultima atualizacao**: {{DATA}}
+
+## Visao geral
+{{DESCRICAO_EM_1_PARAGRAFO}}
+
+## Trigger
+**O que inicia este workflow**: {{TRIGGER}}
+**Responsavel por iniciar**: {{AGENTE}}
+
+## Etapas
+
+### Etapa 1: {{NOME_ETAPA}}
+- **Responsavel**: {{AGENTE}}
+- **Input**: {{O_QUE_CHEGA}}
+- **O que fazer**: {{ACOES_ESPECIFICAS}}
+- **Ferramentas**: {{FERRAMENTA_USADA}}
+- **Output**: {{O_QUE_SAIR}}
+- **Tempo esperado**: {{DURACAO}}
+- **Gate para avancar**: {{CONDICAO}}
+
+(repetir para cada etapa)
+
+## Checklist de execucao — {{ETAPA_REPETITIVA}}
+- [ ] {{PASSO_1}}
+- [ ] {{PASSO_2}}
+
+## Metricas
+| Metrica | Baseline atual | Meta |
+|---------|----------------|------|
+| {{METRICA}} | {{VALOR_ATUAL}} | {{VALOR_META}} |
+
+## Como implementar nas ferramentas
+- **{{FERRAMENTA}}**: {{COMO_CONFIGURAR_OU_USAR}}
+
+## Alertas de gargalo
+- Se etapa X demorar mais de {{TEMPO}}: {{ACAO_A_TOMAR}}
+```
+
+---
+
 ## Checklist de self-review
 
 Antes de apresentar ao usuario, verificar:
 
+**Para dominio Dev/AI (Nucleo Spec):**
 - [ ] Todos os brains tem papel e triggers definidos?
 - [ ] Routing cobre todas as tarefas possiveis do dominio?
 - [ ] Playbooks tem sequencia logica com gates?
 - [ ] Regras imutaveis tem justificativa (WHY)?
-- [ ] Complexidade classificada corretamente?
-- [ ] Status = Draft (usuario ainda nao aprovou)?
-- [ ] Nenhum placeholder vazio na spec?
 - [ ] Descriptions dos brains tem 3+ trigger phrases?
 - [ ] Plano de memoria definido?
-- [ ] Consultou nucleos/registry.md para patterns existentes?
 - [ ] Nenhum brain com escopo sobreposto?
 - [ ] Pre/post-condicoes de cada brain formam gates validos?
+
+**Para dominio Empresarial (Business Workflow Design):**
+- [ ] Trigger do workflow definido?
+- [ ] Cada etapa tem responsavel, input, output e gate?
+- [ ] Ferramentas existentes mapeadas por etapa?
+- [ ] Templates criados para etapas repetitivas?
+- [ ] Metricas quantificadas (baseline → meta)?
+- [ ] Alertas de gargalo definidos?
+
+**Ambos:**
+- [ ] Complexidade classificada corretamente?
+- [ ] Status = Draft (usuario ainda nao aprovou)?
+- [ ] Nenhum placeholder vazio?
+- [ ] Consultou nucleos/registry.md para patterns existentes?
 - [ ] Integracoes externas identificadas e listadas?
 
 ## Post-condicoes (gate de saida)
 
-- Nucleo Spec escrita com conteudo completo (sem placeholders vazios)
+- Spec ou Design escrito com conteudo completo (sem placeholders vazios)
 - Status = Draft (apresentada ao usuario para revisao)
 - Status muda para Approved SOMENTE quando usuario confirma explicitamente
 - Nunca mudar status automaticamente
-- Spec salva em formato markdown para consumo do workflow-generator
+- Documento salvo em formato markdown para consumo do workflow-generator
 
 ### Fluxo de aprovacao
 
@@ -219,8 +332,9 @@ Antes de apresentar ao usuario, verificar:
 
 ## Criterios de handoff
 
-- Apos aprovacao do usuario → workflow-generator (para gerar os arquivos do nucleo)
-- Se usuario pedir mudancas na spec → iterar ate aprovacao
-- Se dominio requer integracoes complexas → alertar antes de aprovar
-- Se complexidade parece subestimada → alertar usuario e sugerir reclassificacao
-- Se registro mostra nucleo similar ja gerado → perguntar se quer usar como base
+- **Spec/Design aprovado** → workflow-generator (gera os arquivos — nucleo ou workflow empresarial)
+- **Usuario pedir mudancas** → iterar ate aprovacao
+- **Dominio requer integracoes complexas** → alertar antes de aprovar
+- **Complexidade parece subestimada** → alertar usuario e sugerir reclassificacao
+- **Registro mostra nucleo similar** → perguntar se quer usar como base
+- **Dominio empresarial sem Business Workflow Spec** → voltar ao workflow-business para intake primeiro
