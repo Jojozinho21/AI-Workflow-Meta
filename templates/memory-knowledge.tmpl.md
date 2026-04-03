@@ -38,16 +38,32 @@
 ## Padroes Validados
 
 <!-- Padroes que funcionaram bem e devem ser repetidos.
-     Formato: - **[Nome do padrao]**: [descricao curta] (validado em [contexto]) -->
+     Formato: - **[Nome do padrao]**: [descricao curta] (validado em [contexto])
 
-<!-- Nenhum padrao registrado ainda. -->
+     Exemplos reais (remover ao preencher):
+     - **Debug por niveis**: log condicional por nivel (debug/info/error) com flag em config,
+       permite diagnostico sem recompilar (validado em producao)
+     - **Try-catch com fallback**: operacao critica com valor padrao se falhar,
+       evita crash total por falha pontual (validado em integracao externa)
+     - **Auto-save com dirty flag**: so salva quando dados realmente mudaram,
+       reduz carga no banco drasticamente (validado com 50+ jogadores)
+     - **Estado volatil de carregamento**: flag isLoading previne acoes durante
+       inicializacao, evita NPE e estados inconsistentes (validado em plugin) -->
 
 ## Anti-Padroes Descobertos
 
 <!-- Abordagens que falharam e devem ser evitadas.
-     Formato: - **[Nome do anti-padrao]**: [o que aconteceu] -> [alternativa correta] -->
+     Formato: - **[Nome do anti-padrao]**: [o que aconteceu] -> [alternativa correta]
 
-<!-- Nenhum anti-padrao registrado ainda. -->
+     Exemplos reais (remover ao preencher):
+     - **Codificar antes de investigar**: escreveu integracao sem entender API do plugin externo,
+       teve que reescrever 3x -> sempre decompilar/investigar antes de codificar
+     - **Match por propriedade unica**: comparou objetos complexos por apenas 1 campo,
+       causou falsos positivos -> usar 2+ criterios ou identificadores unicos
+     - **Ler apos operacao destrutiva**: tentou ler dados de um objeto ja consumido/removido,
+       retornou null -> extrair dados ANTES da operacao que os destroi
+     - **Dual-access sem sync**: dois caminhos de acesso ao mesmo recurso sem sincronizacao,
+       causou inconsistencia -> unificar ponto de acesso ou sincronizar -->
 
 ## Issues Conhecidos
 

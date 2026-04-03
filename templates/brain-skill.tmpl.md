@@ -74,7 +74,13 @@ description: "{{BRAIN_DESCRIPTION}}"
      Exemplos de pre-condicoes comuns:
      - Plano/spec aprovado pelo usuario
      - Leitura de arquivos de contexto
-     - Perguntas de esclarecimento se descricao vaga -->
+     - Perguntas de esclarecimento se descricao vaga
+
+     GATE DE INTEGRACAO (incluir se brain interage com sistemas externos):
+     - Antes de codificar integracao, investigar API/contrato do sistema externo
+     - Decompilar/ler documentacao ANTES de escrever adapter
+     - Validar que o metodo/classe existe na versao em uso
+     - Licao: codificar integracao sem investigar causa reescrita multipla -->
 
 <!-- ============================================================
      SECAO 3/7: REGRAS
@@ -227,4 +233,7 @@ Antes de apresentar ao usuario, verificar:
      - Cobrir o caminho feliz (handoff padrao)
      - Cobrir caminhos alternativos (erros, dependencias)
      - Cobrir caminho de retorno (quando algo falha downstream)
-     - Referenciar brains pelo nome exato do routing table -->
+     - Referenciar brains pelo nome exato do routing table
+     - HANDOFF PROATIVO: se o brain detecta problemas que outro brain resolve,
+       OFERECER handoff ativamente em vez de esperar o usuario pedir
+       (ex: "Encontrei N problemas. Quer que eu corrija? (ativa brain-X)") -->
